@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>About – Inventory Stock</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <nav class="container" style="display:flex; align-items:center; flex-wrap:wrap;">
+      <a href="/" style="padding:0; margin-right:0.5rem; display:flex; align-items:center;">
+        <img src="/logo.png" alt="Logo" class="logo" style="height:36px; vertical-align:middle;">
+      </a>
+      <a href="/">Home</a>
+      <a href="/add">Add Item</a>
+      <a href="/adjust">Stok Masuk/Keluar</a>
+      <a href="/transactions">Riwayat Transaksi</a>
+      <a href="/stats">Stats</a>
+      <a href="/about" class="active">About</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:0.6rem;">
+          <span style="color:#ffffff; font-size:0.85rem;">👤 <strong><%= user.name %></strong></span>
+          <a href="/logout" class="button small danger" style="padding:0.25rem 0.6rem; font-size:0.8rem; margin:0;">Logout</a>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>About This Application</h1>
+    <p>This inventory manager demonstrates a clean, modern UI built with Node.js, Express, SQLite, and EJS.</p>
+    <ul>
+      <li>Light‑blue color scheme with subtle shadows.</li>
+      <li>Responsive layout – works on desktop and tablets.</li>
+      <li>Search, statistics, and CRUD operations.</li>
+    </ul>
+    <a href="/" class="button">Back to Home</a>
+  </div>
+  <footer>
+    <div class="container">© 2026 Inventory Stock Demo</div>
+  </footer>
+</body>
+</html>

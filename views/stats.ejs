@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Inventory Stats</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <nav class="container" style="display:flex; align-items:center; flex-wrap:wrap;">
+      <a href="/" style="padding:0; margin-right:0.5rem; display:flex; align-items:center;">
+        <img src="/logo.png" alt="Logo" class="logo" style="height:36px; vertical-align:middle;">
+      </a>
+      <a href="/">Home</a>
+      <a href="/add">Add Item</a>
+      <a href="/adjust">Stok Masuk/Keluar</a>
+      <a href="/transactions">Riwayat Transaksi</a>
+      <a href="/stats" class="active">Stats</a>
+      <a href="/about">About</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:0.6rem;">
+          <span style="color:#ffffff; font-size:0.85rem;">👤 <strong><%= user.name %></strong></span>
+          <a href="/logout" class="button small danger" style="padding:0.25rem 0.6rem; font-size:0.8rem; margin:0;">Logout</a>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Inventory Statistics</h1>
+    <ul>
+      <li>Total items: <%= stats.count || 0 %></li>
+      <li>Total quantity: <%= stats.totalQty || 0 %></li>
+      <li>Total stock value:
+        <% if (typeof currencyValues !== 'undefined' && currencyValues.length > 0) { %>
+          <ul style="margin-top:0.35rem; margin-bottom:0.35rem;">
+            <% currencyValues.forEach(function(cv) { %>
+              <li><strong><%= cv.currency || 'IDR' %>:</strong> <%= formatPrice(cv.totalValue, cv.currency) %></li>
+            <% }); %>
+          </ul>
+        <% } else { %>
+          Rp 0
+        <% } %>
+      </li>
+    </ul>
+    <a href="/" class="button">Back to List</a>
+  </div>
+</body>
+</html>

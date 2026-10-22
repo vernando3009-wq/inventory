@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Transaksi Stok – Inventory Stock</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <nav class="container" style="display:flex; align-items:center; flex-wrap:wrap;">
+      <a href="/" style="padding:0; margin-right:0.5rem; display:flex; align-items:center;">
+        <img src="/logo.png" alt="Logo" class="logo" style="height:36px; vertical-align:middle;">
+      </a>
+      <a href="/">Home</a>
+      <a href="/add">Add Item</a>
+      <a href="/adjust">Stok Masuk/Keluar</a>
+      <a href="/transactions" class="active">Riwayat Transaksi</a>
+      <a href="/stats">Stats</a>
+      <a href="/about">About</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:0.6rem;">
+          <span style="color:#ffffff; font-size:0.85rem;">👤 <strong><%= user.name %></strong></span>
+          <a href="/logout" class="button small danger" style="padding:0.25rem 0.6rem; font-size:0.8rem; margin:0;">Logout</a>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <h1>Riwayat Transaksi Stok</h1>
+      <a href="/adjust" class="button success">+ Transaksi Baru</a>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar" style="margin-top:1rem;">
+      <span>Filter Tipe:</span>
+      <a href="/transactions" class="button small <%= currentType === '' ? '' : 'danger' %>" style="<%= currentType === '' ? 'background:#333;' : 'background:#aaa;' %>">Semua</a>
+      <a href="/transactions?type=IN" class="button small" style="<%= currentType === 'IN' ? 'background:#2e8b57;' : 'background:#aaa;' %>">Hanya Masuk (IN)</a>
+      <a href="/transactions?type=OUT" class="button small" style="<%= currentType === 'OUT' ? 'background:#b44646;' : 'background:#aaa;' %>">Hanya Keluar (OUT)</a>
+    </div>
+
+    <% if (transactions.length === 0) { %>
+      <div style="background:#fff; padding:2rem; text-align:center; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.08); margin-top:1rem;">
+        <p style="color:#666; font-size:1.1rem; margin:0;">Belum ada riwayat transaksi stok.</p>
+        <div style="margin-top:1rem;">
+          <a href="/adjust" class="button success small">Catat Transaksi Sekarang</a>
+        </div>
+      </div>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px;">ID</th>
+            <th>Waktu</th>
+            <th>Nama Barang</th>
+            <th style="width:110px;">Tipe</th>
+            <th style="width:90px;">Jumlah</th>
+            <th>Keterangan / Catatan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transactions.forEach(function(tx) { %>
+            <tr>
+              <td><%= tx.id %></td>
+              <td><%= tx.created_at %></td>
+              <td><strong><%= tx.item_name || 'Barang telah dihapus' %></strong></td>
+              <td>
+                <% if (tx.type === 'IN') { %>
+                  <span class="badge badge-in">+ MASUK</span>
+                <% } else { %>
+                  <span class="badge badge-out">- KELUAR</span>
+                <% } %>
+              </td>
+              <td style="font-weight:bold; color: <%= tx.type === 'IN' ? '#155724' : '#721c24' %>;">
+                <%= tx.type === 'IN' ? '+' : '-' %><%= tx.quantity %>
+              </td>
+              <td><%= tx.notes || '-' %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+  <footer>
+    <div class="container">© 2026 Inventory Stock Demo</div>
+  </footer>
+</body>
+</html>

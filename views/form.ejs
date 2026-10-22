@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= item ? 'Edit' : 'Add' %> Item</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <nav class="container" style="display:flex; align-items:center; flex-wrap:wrap;">
+      <a href="/" style="padding:0; margin-right:0.5rem; display:flex; align-items:center;">
+        <img src="/logo.png" alt="Logo" class="logo" style="height:36px; vertical-align:middle;">
+      </a>
+      <a href="/">Home</a>
+      <a href="/add" class="<%= item ? '' : 'active' %>">Add Item</a>
+      <a href="/adjust">Stok Masuk/Keluar</a>
+      <a href="/transactions">Riwayat Transaksi</a>
+      <a href="/stats">Stats</a>
+      <a href="/about">About</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:0.6rem;">
+          <span style="color:#ffffff; font-size:0.85rem;">👤 <strong><%= user.name %></strong></span>
+          <a href="/logout" class="button small danger" style="padding:0.25rem 0.6rem; font-size:0.8rem; margin:0;">Logout</a>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+  <div class="container">
+    <h1><%= item ? 'Edit' : 'Add' %> Item</h1>
+    <div class="form-card">
+      <form action="<%= action %>" method="POST" class="item-form">
+        <label>Name:<br><input type="text" name="name" value="<%= item ? item.name : '' %>" required></label>
+        <label>Quantity:<br><input type="number" name="quantity" min="0" value="<%= item ? item.quantity : '' %>" required></label>
+        <label>Mata Uang (Currency):<br>
+          <select name="currency" style="width: 100%; padding: 0.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; background: #fff;">
+            <option value="IDR" <%= (!item || item.currency === 'IDR') ? 'selected' : '' %>>Rupiah (IDR - Rp)</option>
+            <option value="USD" <%= (item && item.currency === 'USD') ? 'selected' : '' %>>US Dollar (USD - $)</option>
+          </select>
+        </label>
+        <label>Price / Harga:<br><input type="number" step="any" name="price" min="0" value="<%= item ? item.price : '' %>" required></label>
+        <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+          <button type="submit" class="button"><%= item ? 'Update' : 'Add' %> Item</button>
+          <a href="/" class="button" style="background:#888;">Back to List</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="container">© 2026 Inventory Stock Demo</div>
+  </footer>
+</body>
+</html>

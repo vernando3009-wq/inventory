@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stok Masuk / Keluar – Inventory Stock</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <nav class="container" style="display:flex; align-items:center; flex-wrap:wrap;">
+      <a href="/" style="padding:0; margin-right:0.5rem; display:flex; align-items:center;">
+        <img src="/logo.png" alt="Logo" class="logo" style="height:36px; vertical-align:middle;">
+      </a>
+      <a href="/">Home</a>
+      <a href="/add">Add Item</a>
+      <a href="/adjust" class="active">Stok Masuk/Keluar</a>
+      <a href="/transactions">Riwayat Transaksi</a>
+      <a href="/stats">Stats</a>
+      <a href="/about">About</a>
+      <% if (typeof user !== 'undefined' && user) { %>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:0.6rem;">
+          <span style="color:#ffffff; font-size:0.85rem;">👤 <strong><%= user.name %></strong></span>
+          <a href="/logout" class="button small danger" style="padding:0.25rem 0.6rem; font-size:0.8rem; margin:0;">Logout</a>
+        </div>
+      <% } %>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Kelola Stok Masuk / Keluar</h1>
+
+    <% if (error) { %>
+      <div class="alert-error">
+        <strong>Peringatan:</strong> <%= error %>
+      </div>
+    <% } %>
+
+    <div class="form-card">
+      <form action="/adjust" method="POST">
+        <label for="item_id">Pilih Barang:</label>
+        <select name="item_id" id="item_id" required onchange="window.location.href='/adjust/' + this.value">
+          <option value="">-- Pilih Barang --</option>
+          <% items.forEach(function(item) { %>
+            <option value="<%= item.id %>" <%= selectedItem && selectedItem.id === item.id ? 'selected' : '' %>>
+              <%= item.name %> (Stok saat ini: <%= item.quantity %>)
+            </option>
+          <% }); %>
+        </select>
+
+        <% if (selectedItem) { %>
+          <div style="background:#eaf2f8; padding:0.75rem; border-radius:4px; margin-bottom:1rem;">
+            <strong>Barang terpilih:</strong> <%= selectedItem.name %><br>
+            <strong>Stok sekarang:</strong> <%= selectedItem.quantity %> unit | <strong>Harga:</strong> <%= formatPrice(selectedItem.price, selectedItem.currency) %>
+          </div>
+        <% } %>
+
+        <label>Tipe Transaksi:</label>
+        <div style="display:flex; gap:1.5rem; margin-bottom:1rem;">
+          <label style="font-weight:normal; cursor:pointer;">
+            <input type="radio" name="type" value="IN" checked style="width:auto; margin-bottom:0;">
+            <strong style="color:#155724;">+ Stok Masuk (Penambahan)</strong>
+          </label>
+          <label style="font-weight:normal; cursor:pointer;">
+            <input type="radio" name="type" value="OUT" style="width:auto; margin-bottom:0;">
+            <strong style="color:#721c24;">- Stok Keluar (Pengurangan)</strong>
+          </label>
+        </div>
+
+        <label for="quantity">Jumlah Unit:</label>
+        <input type="number" name="quantity" id="quantity" min="1" placeholder="Masukkan jumlah" required>
+
+        <label for="notes">Catatan / Keterangan:</label>
+        <textarea name="notes" id="notes" placeholder="Contoh: Pengiriman supplier, penjualan customer, barang rusak, dsb."></textarea>
+
+        <div style="display:flex; gap:0.5rem;">
+          <button type="submit" class="button success">Simpan Perubahan Stok</button>
+          <a href="/" class="button" style="background:#888;">Batal</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <div class="container">© 2026 Inventory Stock Demo</div>
+  </footer>
+</body>
+</html>
